@@ -2,16 +2,17 @@ sudo: required
 language: nodejs
 services:
 - docker
+env:
+  global:
+  - REGISTRY_USER=aggippbot
+  - secure: "Yc05BZ0cBfQg+gL1+j/XSbx46lGHNr1jdN4X5FqYYrF/IuP9hdpDm790z8kqJx6tlsfgbtpJhUOR3EkF3bAv2SPLiVnNVIifXWk6fCyjLxO/8kONyagLmV9+rfqeYxk2N8lCp4e+A4OLJbQf7wpUQ6Ya+dnTC7D4YrHtEeyIyYGFWyqG94CBuuhjYv9Os940ihj1n15ovwSrc4p6Um3zhpNBRf23CnMkRvoSFRSj0A6VwaDom+CPBlFOLsJdXEZxlk6kl98RJClhML9koZhLm0C8KgVSGXqvxuTHn7eiwGMp4T1OiF3FCFH9dDCMrx4AqIN9LYlkP/GxTluRYclgkW6Ikz3DHjPSc5vyrMRMbba3IrExlH1qt0Xd4fFfOvDNwOC6VpSSABH4dOCsXg3LFrqpSF+7lwWBnlykEdRGjFLJVFxg/K0mLgRQKXbCvFM8DNIF/ak49GnBzHorokbYynRAKT2ZZTKpO/J34DEidZ8xVP4WR+6AKkOjiQRz0nrjytr3R6X4Iuw3ovUlhg7/ma2jAAsHBdXILYQwH8U2VjaZmSBJDYfIgtjAmJsHHC5hkNt4v0fXF5sUGIsO+5DpP4Z6516etdWXWlf6562grLUB5zH+iOEqBeYucHNgMunlryconnk1AkQs5TuGCFMD5KFyPf98IBRiWB1tQK/cReQ="
+before_script:
+- docker pull aggipp/mathmlben || true
 script:
-- docker build --tag aggipp/mathmlben .
+- docker build --pull --cache-from aggipp/mathmlben --tag aggipp/mathmlben .
 - docker run aggipp/mathmlben
 after_script:
 - docker images
-env:
-  global:
-    - REGISTRY_USER=aggippbot
-    - secure: XWRd0orxZyrspyEqkJpsb8DPy42PRDw/YbTr9KwSHzlwPstFln89MTv0Sn65OnzHZ8xgnj8NKMeLJrgsIjaIOhG1bQKaH6Vyeb64dvV5MRy2LBPudMDhgeh9tQFmdfvy7ZtWjXI1Tk1nBThAhIeODTL+emYhRrPzZ3SPwl2zOF/GUnYGep6AjfyD1vE/xRZ92pTtrd5IXVdGeFw+HKVHjeIByFLJ3JeZU4oWy+z+ec71KKa4xlxq9ZOJ2sviITo97RC6DZUks7k8UGfrXZBTiCLjFGISsxMQdoP/IZR82GeJJweZNmPQ+fiXpMJw4cAdJBer3mU77t2bg/zYrXozth8STbRPoghbY77+W8/UWJrhmQpKKgPrFRcYah86mAYc6EDpqSOYwmejoSAhbA0UruN616waztRvU+0dOscgdp6O53iGMhwtAUm2JqohfwBrp/0ZBgiWgv8fCmnE2WYfrwqTsC4dARiFHNJ1HPnE/b6uapSfEhK0KvSM4H2D3MeJNsTf3qyaxhCDPtLg8/i7CEt76PBKmhNyZK+IlYEgX54tTFUXk5XIs9whtYi3511xoJpMZXQvoZZtj/U6R9ZV+/X0U4tDCIM2ni8n7rqA/qwAqZKLccGl2xAGe4/sLPF+VaRMcfVLNmIeAhJ3VWt87BXL4Q+eKu95OnG1f4B2ATs=
-
 before_deploy:
 - docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
 deploy:
