@@ -1,10 +1,21 @@
 sudo: required
+language: nodejs
 services:
-  - docker
-
+- docker
 script:
-  - docker build --tag myimage .
-  - docker run myimage
-
+- docker build --tag aggipp/mathmlben .
+- docker run aggipp/mathmlben
 after_script:
 - docker images
+env:
+  global:
+    - REGISTRY_USER=aggippbot
+    - secure: XWRd0orxZyrspyEqkJpsb8DPy42PRDw/YbTr9KwSHzlwPstFln89MTv0Sn65OnzHZ8xgnj8NKMeLJrgsIjaIOhG1bQKaH6Vyeb64dvV5MRy2LBPudMDhgeh9tQFmdfvy7ZtWjXI1Tk1nBThAhIeODTL+emYhRrPzZ3SPwl2zOF/GUnYGep6AjfyD1vE/xRZ92pTtrd5IXVdGeFw+HKVHjeIByFLJ3JeZU4oWy+z+ec71KKa4xlxq9ZOJ2sviITo97RC6DZUks7k8UGfrXZBTiCLjFGISsxMQdoP/IZR82GeJJweZNmPQ+fiXpMJw4cAdJBer3mU77t2bg/zYrXozth8STbRPoghbY77+W8/UWJrhmQpKKgPrFRcYah86mAYc6EDpqSOYwmejoSAhbA0UruN616waztRvU+0dOscgdp6O53iGMhwtAUm2JqohfwBrp/0ZBgiWgv8fCmnE2WYfrwqTsC4dARiFHNJ1HPnE/b6uapSfEhK0KvSM4H2D3MeJNsTf3qyaxhCDPtLg8/i7CEt76PBKmhNyZK+IlYEgX54tTFUXk5XIs9whtYi3511xoJpMZXQvoZZtj/U6R9ZV+/X0U4tDCIM2ni8n7rqA/qwAqZKLccGl2xAGe4/sLPF+VaRMcfVLNmIeAhJ3VWt87BXL4Q+eKu95OnG1f4B2ATs=
+
+before_deploy:
+- docker login -u "$REGISTRY_USER" -p "$REGISTRY_PASS"
+deploy:
+  provider: script
+  script: docker push aggipp/mathmlben
+  on:
+    branch: master
